@@ -28,22 +28,25 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.btnUnfollow = new System.Windows.Forms.Button();
+            this.btnGetUnfollowers = new System.Windows.Forms.Button();
             this.lstUnfollowers = new System.Windows.Forms.ListBox();
             this.lblUnfollowers = new System.Windows.Forms.Label();
             this.txtChannelName = new System.Windows.Forms.TextBox();
             this.lblChannelName = new System.Windows.Forms.Label();
+            this.backWorker = new System.ComponentModel.BackgroundWorker();
+            this.btnSaveUnFollowers = new System.Windows.Forms.Button();
+            this.btnUnfollow = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // btnUnfollow
+            // btnGetUnfollowers
             // 
-            this.btnUnfollow.Location = new System.Drawing.Point(217, 4);
-            this.btnUnfollow.Name = "btnUnfollow";
-            this.btnUnfollow.Size = new System.Drawing.Size(108, 23);
-            this.btnUnfollow.TabIndex = 1;
-            this.btnUnfollow.Text = "Get Unfollowers";
-            this.btnUnfollow.UseVisualStyleBackColor = true;
-            this.btnUnfollow.Click += new System.EventHandler(this.btnUnfollow_Click);
+            this.btnGetUnfollowers.Location = new System.Drawing.Point(217, 4);
+            this.btnGetUnfollowers.Name = "btnGetUnfollowers";
+            this.btnGetUnfollowers.Size = new System.Drawing.Size(108, 23);
+            this.btnGetUnfollowers.TabIndex = 1;
+            this.btnGetUnfollowers.Text = "Get Unfollowers";
+            this.btnGetUnfollowers.UseVisualStyleBackColor = true;
+            this.btnGetUnfollowers.Click += new System.EventHandler(this.btnUnfollow_Click);
             // 
             // lstUnfollowers
             // 
@@ -78,16 +81,42 @@
             this.lblChannelName.TabIndex = 5;
             this.lblChannelName.Text = "Kanal Adı";
             // 
+            // backWorker
+            // 
+            this.backWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backWorker_DoWork);
+            // 
+            // btnSaveUnFollowers
+            // 
+            this.btnSaveUnFollowers.Location = new System.Drawing.Point(217, 33);
+            this.btnSaveUnFollowers.Name = "btnSaveUnFollowers";
+            this.btnSaveUnFollowers.Size = new System.Drawing.Size(108, 23);
+            this.btnSaveUnFollowers.TabIndex = 6;
+            this.btnSaveUnFollowers.Text = "Save Unfollowers";
+            this.btnSaveUnFollowers.UseVisualStyleBackColor = true;
+            this.btnSaveUnFollowers.Click += new System.EventHandler(this.btnSaveUnFollowers_Click);
+            // 
+            // btnUnfollow
+            // 
+            this.btnUnfollow.Location = new System.Drawing.Point(138, 33);
+            this.btnUnfollow.Name = "btnUnfollow";
+            this.btnUnfollow.Size = new System.Drawing.Size(75, 23);
+            this.btnUnfollow.TabIndex = 7;
+            this.btnUnfollow.Text = "Unfollow";
+            this.btnUnfollow.UseVisualStyleBackColor = true;
+            this.btnUnfollow.Click += new System.EventHandler(this.btnUnfollow_Click_1);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(337, 327);
+            this.ClientSize = new System.Drawing.Size(334, 327);
+            this.Controls.Add(this.btnUnfollow);
+            this.Controls.Add(this.btnSaveUnFollowers);
             this.Controls.Add(this.lblChannelName);
             this.Controls.Add(this.txtChannelName);
             this.Controls.Add(this.lblUnfollowers);
             this.Controls.Add(this.lstUnfollowers);
-            this.Controls.Add(this.btnUnfollow);
+            this.Controls.Add(this.btnGetUnfollowers);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -99,11 +128,14 @@
         }
 
         #endregion
-        private System.Windows.Forms.Button btnUnfollow;
+        private System.Windows.Forms.Button btnGetUnfollowers;
         private System.Windows.Forms.ListBox lstUnfollowers;
         private System.Windows.Forms.Label lblUnfollowers;
         private System.Windows.Forms.TextBox txtChannelName;
         private System.Windows.Forms.Label lblChannelName;
+        private System.ComponentModel.BackgroundWorker backWorker;
+        private System.Windows.Forms.Button btnSaveUnFollowers;
+        private System.Windows.Forms.Button btnUnfollow;
     }
 }
 

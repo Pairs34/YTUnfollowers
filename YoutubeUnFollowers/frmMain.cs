@@ -77,7 +77,6 @@ namespace YoutubeUnFollowers
             List<string> unFollowers = new List<string>();
             foreach (var item in links)
             {
-                //string url = "https://m.youtube.com/user/ExtremitySoft";
                 driver.Navigate().GoToUrl(item + "/channels");
 
                 WaitForPageLoad();
@@ -119,36 +118,10 @@ namespace YoutubeUnFollowers
         {
             var links = GetLinks();
 
-            //List<string> list = new List<string>();
-            //list.Add("A");
-
-            //CheckIsFollow(links);
-
             var unFollowers = CheckIsFollow(links);
 
             lstUnfollowers.Items.AddRange(unFollowers.ToArray());
         }
-        private bool IsElementPresent(By by)
-        {
-            bool Founded = false;
-
-            try
-            {
-                WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(20));
-                IWebElement element = wait.Until(driver => driver.FindElement(by));
-                if (element.Displayed)
-                {
-                    Founded = true;
-                }
-                else
-                {
-                    Founded = false;
-                }
-            }
-            catch (Exception err) { /*LogManager.LogToFile(err.StackTrace);*/ }
-            return Founded;
-        }
-
         protected void RunJSCommand(IWebDriver driver, string jsCommand, object[] options = null)
         {
             IJavaScriptExecutor javaScriptExecutor = (IJavaScriptExecutor)driver;

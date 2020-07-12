@@ -33,6 +33,7 @@ C:\Users\Pairs\Desktop\Projects\YTUnfollowers\YoutubeUnFollowers\bin\Debug\de\De
 C:\Users\Pairs\Desktop\Projects\YTUnfollowers\YoutubeUnFollowers\bin\Debug\es\DevExpress.Pdf.v20.1.Core.resources.dll
 C:\Users\Pairs\Desktop\Projects\YTUnfollowers\YoutubeUnFollowers\bin\Debug\ja\DevExpress.Pdf.v20.1.Core.resources.dll
 C:\Users\Pairs\Desktop\Projects\YTUnfollowers\YoutubeUnFollowers\bin\Debug\ru\DevExpress.Pdf.v20.1.Core.resources.dll
+C:\Users\Pairs\Desktop\Projects\YTUnfollowers\YoutubeUnFollowers\obj\Debug\YoutubeUnFollowers.csprojAssemblyReference.cache
 C:\Users\Pairs\Desktop\Projects\YTUnfollowers\YoutubeUnFollowers\obj\Debug\YoutubeUnFollowers.frmMain.resources
 C:\Users\Pairs\Desktop\Projects\YTUnfollowers\YoutubeUnFollowers\obj\Debug\YoutubeUnFollowers.Properties.Resources.resources
 C:\Users\Pairs\Desktop\Projects\YTUnfollowers\YoutubeUnFollowers\obj\Debug\YoutubeUnFollowers.csproj.GenerateResource.cache
@@ -40,4 +41,3 @@ C:\Users\Pairs\Desktop\Projects\YTUnfollowers\YoutubeUnFollowers\obj\Debug\Youtu
 C:\Users\Pairs\Desktop\Projects\YTUnfollowers\YoutubeUnFollowers\obj\Debug\YoutubeUnFollowers.csproj.CopyComplete
 C:\Users\Pairs\Desktop\Projects\YTUnfollowers\YoutubeUnFollowers\obj\Debug\YoutubeUnFollowers.exe
 C:\Users\Pairs\Desktop\Projects\YTUnfollowers\YoutubeUnFollowers\obj\Debug\YoutubeUnFollowers.pdb
-C:\Users\Pairs\Desktop\Projects\YTUnfollowers\YoutubeUnFollowers\obj\Debug\YoutubeUnFollowers.csprojAssemblyReference.cache

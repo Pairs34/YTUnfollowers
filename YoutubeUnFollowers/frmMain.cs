@@ -125,9 +125,6 @@ namespace YoutubeUnFollowers
 
         private void backWorker_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
-            Process.GetProcesses()
-                     .Where(pr => pr.ProcessName.Contains("gecko") || pr.ProcessName.Contains("firefox"))
-                     .ForEach(p => p.Kill());
             var driverService = FirefoxDriverService.CreateDefaultService();
             driverService.HideCommandPromptWindow = true;
 

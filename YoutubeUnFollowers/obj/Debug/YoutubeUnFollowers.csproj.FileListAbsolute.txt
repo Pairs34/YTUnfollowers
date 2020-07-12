@@ -40,3 +40,4 @@ C:\Users\Pairs\Desktop\Projects\YTUnfollowers\YoutubeUnFollowers\obj\Debug\Youtu
 C:\Users\Pairs\Desktop\Projects\YTUnfollowers\YoutubeUnFollowers\obj\Debug\YoutubeUnFollowers.csproj.CopyComplete
 C:\Users\Pairs\Desktop\Projects\YTUnfollowers\YoutubeUnFollowers\obj\Debug\YoutubeUnFollowers.exe
 C:\Users\Pairs\Desktop\Projects\YTUnfollowers\YoutubeUnFollowers\obj\Debug\YoutubeUnFollowers.pdb
+C:\Users\Pairs\Desktop\Projects\YTUnfollowers\YoutubeUnFollowers\obj\Debug\YoutubeUnFollowers.csprojAssemblyReference.cache

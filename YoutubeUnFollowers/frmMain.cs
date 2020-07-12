@@ -82,21 +82,23 @@ namespace YoutubeUnFollowers
 
                 WaitForPageLoad();
 
-                GotoFullButtom();
-
                 try
                 {
                     var channels = driver.FindElements(By.XPath("//h4[@class='compact-media-item-headline']"));
 
                     if (channels.Count == 0)
                     {
+                        ClickUnFollow();
                         unFollowers.Add(item);
                     }
                     else
                     {
+                        GotoFullButtom();
+
                         var unFollowerChannels = channels.Where(x => x.Text == txtChannelName.Text).ToList();
                         if (unFollowerChannels.Count == 0)
                         {
+                            ClickUnFollow();
                             unFollowers.Add(item);
                         }
                     }
@@ -111,7 +113,11 @@ namespace YoutubeUnFollowers
 
         private void btnUnfollow_Click(object sender, EventArgs e)
         {
-            //main-link
+            if (String.IsNullOrEmpty(txtChannelName.Text))
+            {
+                MessageBox.Show("Kanal Adı Boş");
+                return;
+            }
             backWorker.RunWorkerAsync();
         }
 
@@ -214,78 +220,39 @@ namespace YoutubeUnFollowers
 
         private void btnSaveUnFollowers_Click(object sender, EventArgs e)
         {
-            if (!File.Exists(Application.StartupPath + "\\unfollowers.txt"))
-            {
-                File.Create(Application.StartupPath + "\\unfollowers.txt").Close();
-            }
 
-            File.WriteAllLines(Application.StartupPath + "\\unfollowers.txt", lstUnfollowers.Items.Cast<string>().ToList());
-
-            MessageBox.Show("All Saved");
         }
-
-        private void btnUnfollow_Click_1(object sender, EventArgs e)
+        private void ClickUnFollow()
         {
-            if (File.Exists(Application.StartupPath + "\\unfollowers.txt"))
+            try
             {
-                List<string> unFollowed = new List<string>();
-                Task.Factory.StartNew(() =>
+                Thread.Sleep(2000);
+
+                RunJSCommand(driver, "document.querySelector(\"div > ytm-subscribe-button-renderer > div > c3-material-button > button > div > div\").click()");
+
+                Thread.Sleep(2000);
+
+                RunJSCommand(driver, "document.querySelector(\"div.dialog-buttons > c3-material-button:nth-child(2) > button > div > div\").click()");
+
+                Thread.Sleep(2000);
+            }
+            catch (Exception err)
+            {
+                try
                 {
+                    Thread.Sleep(2000);
 
-                    var unFollowers = File.ReadAllLines(Application.StartupPath + "\\unfollowers.txt");
-                    foreach (var item in unFollowers)
-                    {
-                        try
-                        {
-                            driver.Navigate().GoToUrl(item);
+                    RunJSCommand(driver, "document.querySelector(\"div > ytm-subscribe-button-renderer > div > c3-material-button > button > div > div\").click()");
 
-                            WaitForPageLoad();
+                    Thread.Sleep(2000);
 
-                            Thread.Sleep(2000);
+                    RunJSCommand(driver, "document.querySelector(\"div.dialog-buttons > c3-material-button:nth-child(2) > button > div > div\").click()");
 
-                            RunJSCommand(driver, "document.querySelector(\"div > ytm-subscribe-button-renderer > div > c3-material-button > button > div > div\").click()");
-
-                            Thread.Sleep(2000);
-
-                            RunJSCommand(driver, "document.querySelector(\"div.dialog-buttons > c3-material-button:nth-child(2) > button > div > div\").click()");
-
-                            Thread.Sleep(2000);
-
-                            unFollowed.Add(item);
-
-                        }
-                        catch (Exception err)
-                        {
-                            try
-                            {
-                                Thread.Sleep(2000);
-
-                                RunJSCommand(driver, "document.querySelector(\"div > ytm-subscribe-button-renderer > div > c3-material-button > button > div > div\").click()");
-
-                                Thread.Sleep(2000);
-
-                                RunJSCommand(driver, "document.querySelector(\"div.dialog-buttons > c3-material-button:nth-child(2) > button > div > div\").click()");
-
-                                Thread.Sleep(2000);
-                            }
-                            catch (Exception)
-                            {
-                            }
-                            continue;
-                        }
-                    }
-
-
-                    if (!File.Exists(Application.StartupPath + "\\unFollowed.txt"))
-                    {
-                        File.Create(Application.StartupPath + "\\unFollowed.txt").Close();
-                    }
-
-                    File.WriteAllLines(Application.StartupPath + "\\unFollowed.txt", unFollowed.ToList());
-
-                    MessageBox.Show("All Saved");
-
-                });
+                    Thread.Sleep(2000);
+                }
+                catch (Exception)
+                {
+                }
             }
         }
     }

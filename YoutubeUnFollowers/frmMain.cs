@@ -10,36 +10,23 @@ using System.Collections.Generic;
 using OpenQA.Selenium.Support.UI;
 using System.Threading;
 using System.Threading.Tasks;
+using IniParser;
+using IniParser.Model;
+using YoutubeUnFollowers.Helper;
 
 namespace YoutubeUnFollowers
 {
-    public partial class frmMain : Form
+    public partial class frmMain : DevExpress.XtraEditors.XtraForm
     {
         IWebDriver driver;
         const string FOLLOWERS = "https://m.youtube.com/feed/channels";
+        
         public frmMain()
         {
             InitializeComponent();
+            Globals.GetFFExecutePath();
             CheckForIllegalCrossThreadCalls = false;
-            Process.GetProcesses()
-                     .Where(pr => pr.ProcessName.Contains("gecko") || pr.ProcessName.Contains("firefox"))
-                     .ForEach(p => p.Kill());
-            var driverService = FirefoxDriverService.CreateDefaultService();
-            driverService.HideCommandPromptWindow = true;
-
-            string pathToCurrentUserProfiles = Environment.ExpandEnvironmentVariables("%APPDATA%") + @"\Mozilla\Firefox\Profiles";
-            string[] pathsToProfiles = Directory.GetDirectories(pathToCurrentUserProfiles, $"*.default", SearchOption.TopDirectoryOnly);
-            string profilePath = string.Empty;
-            if (pathsToProfiles.Length != 0)
-            {
-                profilePath = pathsToProfiles[0];
-            }
-
-            FirefoxProfile ffProfile = new FirefoxProfile(profilePath);
-            ffProfile.SetPreference("general.useragent.override", "iPhone");
-
-            driver = new FirefoxDriver(driverService, new FirefoxOptions() { Profile = ffProfile });
-            driver.Url = FOLLOWERS;
+            GetUserList();
         }
 
         protected void WaitForPageLoad()
@@ -53,6 +40,22 @@ namespace YoutubeUnFollowers
             catch (Exception) { }
         }
 
+        public void GetUserList()
+        {
+            string localFFProfiles = Globals.FF_PROFILE_FILE;
+
+            if (File.Exists(localFFProfiles))
+            {
+                var parser = new FileIniDataParser();
+                IniData data = parser.ReadFile(localFFProfiles);
+                cbProfiles.Properties.Items.Clear();
+                foreach (var item in data.Sections.Where(x => x.SectionName.StartsWith("Profile")))
+                {
+                    if (!data[item.SectionName]["Name"].Contains("default"))
+                        cbProfiles.Properties.Items.Add(data[item.SectionName]["Name"]);
+                }
+            }
+        }
         List<string> GetLinks()
         {
             var Scroller = Task.Factory.StartNew(() =>
@@ -77,7 +80,6 @@ namespace YoutubeUnFollowers
             List<string> unFollowers = new List<string>();
             foreach (var item in links)
             {
-                //string url = "https://m.youtube.com/user/ExtremitySoft";
                 driver.Navigate().GoToUrl(item + "/channels");
 
                 WaitForPageLoad();
@@ -123,36 +125,35 @@ namespace YoutubeUnFollowers
 
         private void backWorker_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
+            Process.GetProcesses()
+                     .Where(pr => pr.ProcessName.Contains("gecko") || pr.ProcessName.Contains("firefox"))
+                     .ForEach(p => p.Kill());
+            var driverService = FirefoxDriverService.CreateDefaultService();
+            driverService.HideCommandPromptWindow = true;
+
+            string pathToCurrentUserProfiles = Environment.ExpandEnvironmentVariables("%APPDATA%") + @"\Mozilla\Firefox\Profiles";
+            string[] pathsToProfiles = Directory.GetDirectories(pathToCurrentUserProfiles, $"*.default", SearchOption.TopDirectoryOnly);
+            string profilePath = string.Empty;
+            if (pathsToProfiles.Length != 0)
+            {
+                profilePath = pathsToProfiles[0];
+            }
+
+            FirefoxProfile ffProfile = new FirefoxProfile(profilePath);
+            ffProfile.SetPreference("general.useragent.override", "iPhone");
+
+            FirefoxOptions ffOptions = new FirefoxOptions();
+            ffOptions.Profile = ffProfile;
+            ffOptions.AddArguments(new[] { "--headless","--disable-web-security", "--user-data-dir", "--allow-running-insecure-content" });
+
+            driver = new FirefoxDriver(driverService, ffOptions);
+            driver.Url = FOLLOWERS;
+
             var links = GetLinks();
-
-            //List<string> list = new List<string>();
-            //list.Add("A");
-
-            //CheckIsFollow(links);
 
             var unFollowers = CheckIsFollow(links);
 
             lstUnfollowers.Items.AddRange(unFollowers.ToArray());
-        }
-        private bool IsElementPresent(By by)
-        {
-            bool Founded = false;
-
-            try
-            {
-                WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(20));
-                IWebElement element = wait.Until(driver => driver.FindElement(by));
-                if (element.Displayed)
-                {
-                    Founded = true;
-                }
-                else
-                {
-                    Founded = false;
-                }
-            }
-            catch (Exception err) { /*LogManager.LogToFile(err.StackTrace);*/ }
-            return Founded;
         }
 
         protected void RunJSCommand(IWebDriver driver, string jsCommand, object[] options = null)
@@ -217,11 +218,6 @@ namespace YoutubeUnFollowers
 
             Console.WriteLine("Bitti");
         }
-
-        private void btnSaveUnFollowers_Click(object sender, EventArgs e)
-        {
-
-        }
         private void ClickUnFollow()
         {
             try
@@ -254,6 +250,19 @@ namespace YoutubeUnFollowers
                 {
                 }
             }
+        }
+
+        private void btnSettings_Click(object sender, EventArgs e)
+        {
+            frmSettings settings = new frmSettings();
+            settings.ShowDialog();
+            GetUserList();
+        }
+
+        private void btnInitProfil_Click(object sender, EventArgs e)
+        {
+            string param = $"-P \"{cbProfiles.EditValue.ToString()}\" -new-window \"accounts.google.com\"";
+            Process.Start(Globals.FF_EXECUTE_PATH, param);
         }
     }
 }

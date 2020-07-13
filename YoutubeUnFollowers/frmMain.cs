@@ -120,6 +120,12 @@ namespace YoutubeUnFollowers
                 MessageBox.Show("Kanal Adı Boş");
                 return;
             }
+
+            if(cbProfiles.EditValue == null)
+            {
+                MessageBox.Show("Profil Boş");
+                return;
+            }
             backWorker.RunWorkerAsync();
         }
 
@@ -129,7 +135,7 @@ namespace YoutubeUnFollowers
             driverService.HideCommandPromptWindow = true;
 
             string pathToCurrentUserProfiles = Environment.ExpandEnvironmentVariables("%APPDATA%") + @"\Mozilla\Firefox\Profiles";
-            string[] pathsToProfiles = Directory.GetDirectories(pathToCurrentUserProfiles, $"*.default", SearchOption.TopDirectoryOnly);
+            string[] pathsToProfiles = Directory.GetDirectories(pathToCurrentUserProfiles, $"*.{cbProfiles.EditValue}", SearchOption.TopDirectoryOnly);
             string profilePath = string.Empty;
             if (pathsToProfiles.Length != 0)
             {
